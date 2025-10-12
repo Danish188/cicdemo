@@ -12,3 +12,7 @@ obj/s
 *.sln.docstates
 
 /CICDDemo/obj
+/CICDDemo/Properties
+/CICDDemo/appsettings.Development.json
+*.Secret.json
+.env
