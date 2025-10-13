@@ -3,7 +3,7 @@ name: Build and Publish Docker image
 on:
   push:
     branches: ["main"]
-  workflow_dispatch:  # allows manual trigger
+  workflow_dispatch:
 
 jobs:
   build:
@@ -31,8 +31,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ toLower(github.actor) }}/cicddemo:latest .
+          IMAGE_NAME="ghcr.io/${GITHUB_ACTOR,,}/cicddemo:latest"
+          docker build -t $IMAGE_NAME .
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ toLower(github.actor) }}/cicddemo:latest
+          IMAGE_NAME="ghcr.io/${GITHUB_ACTOR,,}/cicddemo:latest"
+          docker push $IMAGE_NAME
