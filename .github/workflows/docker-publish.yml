@@ -32,9 +32,10 @@ jobs:
       - name: Build Docker image
         run: |
           IMAGE_NAME="ghcr.io/${GITHUB_ACTOR,,}/cicddemo:latest"
-          docker build -t $IMAGE_NAME .
+          docker build -t $IMAGE_NAME -f CICDDemo/Dockerfile .
 
       - name: Push Docker image
         run: |
           IMAGE_NAME="ghcr.io/${GITHUB_ACTOR,,}/cicddemo:latest"
           docker push $IMAGE_NAME
+
