@@ -1,26 +1,22 @@
-# Stage 1: Build and publish the app
+# Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy the project file and restore dependencies
-COPY ["CICDDemo.csproj", "./"]
-RUN dotnet restore "CICDDemo.csproj"
+COPY ["CICDDemo/CICDDemo.csproj", "CICDDemo/"]
+RUN dotnet restore "CICDDemo/CICDDemo.csproj"
 
-# Copy the rest of the project files
+# Copy everything else and build
 COPY . .
+WORKDIR "/src/CICDDemo"
+RUN dotnet build "CICDDemo.csproj" -c Release -o /app/build
 
-# Publish the application to /app/publish
+# Publish
+FROM build AS publish
 RUN dotnet publish "CICDDemo.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# Stage 2: Final runtime image
+# Final image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-
-# Copy published output from build stage
-COPY --from=build /app/publish .
-
-# Expose port for your web API
-EXPOSE 8080
-
-# Start the application
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CICDDemo.dll"]
