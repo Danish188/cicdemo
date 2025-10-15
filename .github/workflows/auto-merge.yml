@@ -28,7 +28,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           check-name: 'Build and Push Docker Image / build'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GHCR_PAT }}
           wait-interval: 15
 
 
@@ -36,6 +36,6 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'automerge')
         uses: pascalgn/automerge-action@v0.16.4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GHCR_PAT }}
           MERGE_METHOD: squash
           MERGE_DELETE_BRANCH: true
