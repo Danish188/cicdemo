@@ -27,9 +27,10 @@ jobs:
         uses: lewagon/wait-on-check-action@v1.3.4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          check-name: 'Build and Push Docker Image'
+          check-name: 'Build and Push Docker Image / build'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 15
+
 
       - name: Merge PR when labeled 'automerge'
         if: contains(github.event.pull_request.labels.*.name, 'automerge')
