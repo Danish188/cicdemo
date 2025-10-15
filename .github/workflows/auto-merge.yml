@@ -18,19 +18,23 @@ jobs:
   automerge:
     runs-on: ubuntu-latest
     if: github.event.pull_request.base.ref == 'main'
+
     steps:
+      - name: Wait for checks to start
+        run: sleep 20
+
       - name: Wait for CI to pass
         uses: lewagon/wait-on-check-action@v1.3.4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           check-name: 'Build and Push Docker Image'
-          repo-token: ${{ secrets.GHCR_PAT }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 15
 
       - name: Merge PR when labeled 'automerge'
         if: contains(github.event.pull_request.labels.*.name, 'automerge')
         uses: pascalgn/automerge-action@v0.16.4
         env:
-          GITHUB_TOKEN: ${{ secrets.GHCR_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MERGE_METHOD: squash
           MERGE_DELETE_BRANCH: true
