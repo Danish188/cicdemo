@@ -18,7 +18,7 @@ namespace CICDDemo.Controllers
             _logger = logger;
         }
 
-        [HttpPost(Name = "GetWeatherForecast")]
+        [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
