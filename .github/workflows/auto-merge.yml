@@ -13,6 +13,7 @@ permissions:
   contents: write
   pull-requests: write
   actions: read
+  checks: read  
 
 jobs:
   automerge:
@@ -30,6 +31,7 @@ jobs:
           check-name: 'Build and Push Docker Image'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 15
+
 
       - name: Merge PR when labeled 'automerge'
         if: contains(github.event.pull_request.labels.*.name, 'automerge')
