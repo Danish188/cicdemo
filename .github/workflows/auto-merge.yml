@@ -22,16 +22,18 @@ jobs:
 
     steps:
       - name: Wait for checks to start
-        run: sleep 20
+        # Give checks some time to appear before polling
+        run: sleep 60
 
       - name: Wait for CI to pass
         uses: lewagon/wait-on-check-action@v1.3.4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          check-name: 'Build and Push Docker Image / build'
+          # The check run name reported in the logs is "build" (not the workflow title).
+          # Use the exact check-run name so the action finds the check.
+          check-name: 'build'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 15
-
 
       - name: Merge PR when labeled 'automerge'
         if: contains(github.event.pull_request.labels.*.name, 'automerge')
